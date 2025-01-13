@@ -11,6 +11,8 @@ class OdomFilterNode(Node):
     def __init__(self):
         super().__init__('rf2o_filter')
         
+        # wordt op dit moment niet gebruikt / is niet nodig om te filteren
+
         # Unfiltered frames van rf2o
         self.source_odom_frame = 'odom_unfiltered'
         self.source_base_frame = 'base_link_unfiltered'
@@ -41,11 +43,11 @@ class OdomFilterNode(Node):
         self.odom_sub = self.create_subscription(Odometry, '/odom_rf2o', self.odom_callback, 10)
         
         # Publisher voor de gefilterde odom
-        self.odom_pub = self.create_publisher(Odometry, '/odom', 10)
+       # self.odom_pub = self.create_publisher(Odometry, '/odom', 10)
 
         # Subscribe to /cmd_vel and besturings_data
-        self.cmd_vel_sub = self.create_subscription(Twist, '/cmd_vel', self.cmd_vel_callback, 10)
-        self.besturings_data_sub = self.create_subscription(BesturingsData, 'besturings_data', self.besturings_data_callback, 10)
+        #self.cmd_vel_sub = self.create_subscription(Twist, '/cmd_vel', self.cmd_vel_callback, 10)
+        #self.besturings_data_sub = self.create_subscription(BesturingsData, 'besturings_data', self.besturings_data_callback, 10)
 
         # Motion state flags
         self.cmd_vel_moving = False
@@ -103,9 +105,9 @@ class OdomFilterNode(Node):
 
     def check_transform(self):
         # Skip publishing if both cmd_vel and besturings_data indicate no motion
-        if not self.cmd_vel_moving and not self.besturings_data_moving:
+        #if not self.cmd_vel_moving and not self.besturings_data_moving:
             # print('No motion detected, skipping transform update')
-            return
+        #    return
 
         try:
             trans = self.tf_buffer.lookup_transform(
